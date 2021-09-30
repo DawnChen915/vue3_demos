@@ -1,5 +1,9 @@
-import { isSpec } from "../utils/validate";
-import { ElMessage } from 'element-plus'
+import {
+    isSpec
+} from "../utils/validate";
+import {
+    ElMessage
+} from 'element-plus'
 
 let findEle = (parent, type) => {
     return parent.tagName.toLowerCase() === type ? parent : parent.querySelector(type)
@@ -19,7 +23,10 @@ const VisSpec = {
             let val = $inp.value
             if (isSpec(val)) {
 
-                ElMessage({ type: 'error', message: '存在特殊字符。' })
+                ElMessage({
+                    type: 'error',
+                    message: '存在特殊字符。'
+                })
                 $inp.value = ""
             }
             trigger($inp, 'input')
@@ -45,6 +52,18 @@ const VdialogDrag = {
             const disX = e.clientX - dialogHeaderEl.offsetLeft
             const disY = e.clientY - dialogHeaderEl.offsetTop
 
+            const screenWidth = document.body.clientWidth; // body当前宽度
+            const screenHeight = document.documentElement.clientHeight; // 可见区域高度(应为body高度，可某些环境下无法获取) 
+
+            const dragDomWidth = dragDom.offsetWidth; // 对话框宽度
+            const dragDomheight = dragDom.offsetHeight; // 对话框高度
+
+            const minDragDomLeft = dragDom.offsetLeft;
+            const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth;
+
+            const minDragDomTop = dragDom.offsetTop;
+            const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomheight;
+
             // 获取到的值带px 正则匹配替换
             let styL, styT
 
@@ -59,15 +78,31 @@ const VdialogDrag = {
 
             document.onmousemove = function (e) {
                 // 通过事件委托，计算移动的距离
-                const l = e.clientX - disX
-                const t = e.clientY - disY
+                // const l = e.clientX - disX
+                // const t = e.clientY - disY
+                let left = e.clientX - disX;
+                let top = e.clientY - disY;
 
                 // 移动当前元素
-                dragDom.style.left = `${l + styL}px`
-                dragDom.style.top = `${t + styT}px`
+                // dragDom.style.left = `${l + styL}px`
+                // dragDom.style.top = `${t + styT}px`
 
                 // 将此时的位置传出去
                 // binding.value({x:e.pageX,y:e.pageY})
+
+                // 边界处理
+                if (-(left) > minDragDomLeft) {
+                    left = -(minDragDomLeft);
+                } else if (left > maxDragDomLeft) {
+                    left = maxDragDomLeft;
+                }
+
+                if (-(top) > minDragDomTop) {
+                    top = -(minDragDomTop);
+                } else if (top > maxDragDomTop) {
+                    top = maxDragDomTop;
+                }
+                dragDom.style.cssText += `;left:${left + styL}px;top:${top + styT}px;`;
             }
 
             document.onmouseup = function (e) {
@@ -101,5 +136,7 @@ const VdialogDragWidth = {
     }
 }
 export {
-    VisSpec,VdialogDrag,VdialogDragWidth
+    VisSpec,
+    VdialogDrag,
+    VdialogDragWidth
 }

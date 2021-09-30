@@ -74,6 +74,16 @@ export const routes = [
         },
       },
       {
+        path: 'upload',
+        name: 'upload',
+        component: () => import('@/views/func_demos/file/fileUpload'),
+        meta: {
+          title: '文件上传',
+          icon: 'SetUp',
+          affix: false,
+        },
+      },
+      {
         path: 'slots',
         name: 'slots',
         component: () => import('@/views/func_demos/slot/index'),
@@ -99,6 +109,16 @@ export const routes = [
         component: () => import('@/views/func_demos/mapGeo/index'),
         meta: {
           title: '大屏地图',
+          icon: 'SetUp',
+          affix: false,
+        },
+      },
+      {
+        path: 'mock',
+        name: 'mock',
+        component: () => import('@/views/func_demos/mock/index'),
+        meta: {
+          title: 'mock数据',
           icon: 'SetUp',
           affix: false,
         },
