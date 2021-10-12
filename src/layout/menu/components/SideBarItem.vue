@@ -10,6 +10,7 @@
       <side-bar-item
         v-for="route in item.children"
         :key="route.path"
+        v-show="route.meta.title"
         :full-path="handlePath(route.path)"
         :item="route"
       />

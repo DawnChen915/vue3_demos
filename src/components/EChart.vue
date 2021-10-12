@@ -32,8 +32,8 @@ export default {
         chart.resize()
       }, 300)
     }, DELAY)
-
-    window.addEventListener('resize', this.chart._resize)
+   
+    // window.addEventListener('resize', this.chart._resize)
 
     // 监听菜单状态
     // window.eventBus.$on('menuCollapse', collapse => {
@@ -92,7 +92,7 @@ export default {
 
 <style lang="scss" scoped>
 .chart {
-  // width: 100%;
+  width: 100%;
   height: 100%;
   position: relative;
   .chart-view {

@@ -94,6 +94,16 @@ export const routes = [
         },
       },
       {
+        path: 'setup',
+        name: 'setup',
+        component: () => import('@/views/func_demos/setup/index'),
+        meta: {
+          title: 'setup语法糖',
+          icon: 'SetUp',
+          affix: false,
+        },
+      },
+      {
         path: 'lifeCircle',
         name: 'lifeCircle',
         component: () => import('@/views/func_demos/lifeCircle/parents'),
@@ -162,6 +172,7 @@ export const routes = [
           affix: false,
         },
       },
+     
       {
         path: 'style2',
         name: 'style2',
@@ -173,7 +184,17 @@ export const routes = [
         },
       },
     ]
-  }
+  },
+  {
+    path: '/detail',
+    name: 'detail',
+    component: () => import('@/views/style_demos/detail'),
+    meta: {
+      title: '',
+      icon: 'layout',
+      affix: false,
+    },
+  },
   
 ]
 

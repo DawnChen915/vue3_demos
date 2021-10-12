@@ -9,6 +9,7 @@
     >
       <el-tab-pane
         v-for="item in visitedRoutes"
+        v-show="item.meta.title"
         :key="item.path"
         :label="item.meta.title"
         :name="item.path"

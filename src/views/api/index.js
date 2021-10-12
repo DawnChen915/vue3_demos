@@ -15,3 +15,11 @@ export function fetchArticle(data) {
     data: data
   })
 }
+
+export function fetchElec(data){
+  return request({
+    url:'/vue3_demos/elec/list',
+    method:'post',
+    data:data
+  })
+}

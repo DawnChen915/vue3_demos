@@ -1,20 +1,16 @@
 /**
  * @description 防抖函数
  */
-export function debounce(fun, delay) {
-    var interval = delay || 200;
-    var timer;
-    return function () {
-        var th = this;
-        var args = arguments;
-        if (timer) {
-            clearTimeout(timer);
-        }
-        timer = setTimeout(function () {
-            timer = null;
-            fun.apply(th, args);
-        }, interval);
-    };
+export function debounce(fn, delay) {
+    let handle;
+    return function (e) {
+        // 取消之前的延时调用
+        clearTimeout(handle);
+        handle = setTimeout(() => {
+            fn(e);
+        }, delay);
+    }
+
 }
 
 /**
@@ -40,5 +36,3 @@ export function throttle(fun, delay) {
         }
     }
 }
-
-
