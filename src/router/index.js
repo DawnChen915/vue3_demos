@@ -152,6 +152,16 @@ export const routes = [
           icon: 'asd',
           affix: false,
         },
+      },
+      {
+        path: 'express',
+        name: 'express',
+        component: () => import('@/views/func_demos/express/index'),
+        meta: {
+          title: 'express',
+          icon: 'asd',
+          affix: false,
+        },
       }
      
     ]
@@ -174,15 +184,25 @@ export const routes = [
       },
      
       {
-        path: 'style2',
-        name: 'style2',
-        component: () => import('@/views/style_demos/index'),
+        path: 'dynamicTable',
+        name: 'dynamicTable',
+        component: () => import('@/views/style_demos/dynamicTable/index'),
         meta: {
-          title: '样式demo2',
+          title: '动态表格',
           icon: 'layout',
           affix: false,
         },
       },
+      {
+        path: '/mapDemo',
+        name: 'mapDemo',
+        component: () => import('@/views/style_demos/mapDemo'),
+        meta: {
+          title: '地图示例',
+          icon: 'layout',
+          affix: false,
+        },
+      }
     ]
   },
   {
@@ -195,6 +215,7 @@ export const routes = [
       affix: false,
     },
   },
+  
   
 ]
 

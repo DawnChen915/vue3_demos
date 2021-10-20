@@ -4,7 +4,7 @@
       <div style="font-size:25px">数据质量管理</div>
       <el-select
         v-model="queryParams.city"
-        placeholder="请选择城市"
+        placeholder="请选择月份"
         @change="handleQuery"
         clearable
         :style="{width: '120px'}"
@@ -162,29 +162,24 @@
       ref="mytable"
       :data="tableData"
       style="width: 100%"
+      size="mini"
+      border
       v-loading="queryParams.loading"
     >
       <el-table-column
         type="index"
         label="序号"
+        width="60"
       />
-      <el-table-column
-        label="计量点名称"
-        prop="name"
-      >
-        <template #default="scope">
-          <el-button
-            type="text"
-            @click="showDetail(scope.row)"
-          >
-            {{scope.row.name}}
-          </el-button>
-        </template>
-      </el-table-column>
       <el-table-column
         label="所属市场成员"
         prop="generationEnterprises"
         show-overflow-tooltip
+      />
+      <el-table-column
+        label="地理区域"
+        prop="area"
+        width="100"
       />
       <el-table-column
         label="发电集团"
@@ -194,25 +189,48 @@
       <el-table-column
         label="发电类型"
         prop="type"
+        width="100"
       />
       <el-table-column
-        label="地理区域"
-        prop="area"
-      />
-
+        label="计量点名称"
+        prop="name"
+      >
+        <template #default="scope">
+          <el-button
+            type="text"
+            size="mini"
+            @click="showDetail(scope.row)"
+          >
+            {{scope.row.name}}
+          </el-button>
+        </template>
+      </el-table-column>
       <el-table-column
         label="倍率"
         prop="ratio"
+        width="100"
       />
       <el-table-column
         label="数据状态"
         prop="status"
+        width="150"
       >
         <template #default="scope">
           <span :style="statusColor(scope.row)">
             <i :class="statusIcon(scope.row)" />
-            {{scope.row.status==1?'正常':scope.row.status==2?'正确性异常':'完整性异常'}}
+            {{scope.row.status==1?'正常数据':scope.row.status==2?'无效数据':'缺失数据'}}
           </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-button
+            type="primary"
+            size="mini"
+            @click="handleError(scope.row)"
+          >
+            异常处理
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -247,19 +265,19 @@ export default {
         generatingStation: undefined,
         area: undefined,
         code: undefined,
-        loading:false
+        loading: false
       },
       cityOptions: [{
-        "label": "锡林郭勒",
+        "label": "10月",
         "value": 1
       }, {
-        "label": "呼哈浩特",
+        "label": "9月",
         "value": 2
       }, {
-        "label": "通辽",
+        "label": "8月",
         "value": 3
       }, {
-        "label": "呼伦贝尔",
+        "label": "7月",
         "value": 4
       }],
       tableData: [
@@ -373,7 +391,8 @@ export default {
           left: 'center'
         },
         tooltip: {
-          trigger: 'item'
+          trigger: 'item',
+          formatter: '{b0}:{c0}<br /> {d}%'
         },
         legend: {
           orient: 'vertical',
@@ -387,8 +406,8 @@ export default {
             radius: '50%',
             data: [
               { value: 1, name: '正常数据' },
-              { value: 1, name: '正确性异常' },
-              { value: 1, name: '完整性异常' },
+              { value: 1, name: '无效数据' },
+              { value: 1, name: '缺失数据' },
 
             ],
             emphasis: {
@@ -403,7 +422,7 @@ export default {
       },
       barOption2: {
         title: {
-          text: '历年各项数据变化',
+          text: '各地区数据',
           subtext: '数据质量管理',
           left: 'center'
         },
@@ -425,7 +444,7 @@ export default {
         xAxis: [
           {
             type: 'category',
-            data: ['2015', '2016', '2017', '2018', '2019', '2020', '2021']
+            data: ['赤峰市', '通辽市', '兴安盟', '呼伦贝尔市', ]
           }
         ],
         yAxis: [
@@ -441,39 +460,39 @@ export default {
             emphasis: {
               focus: 'series'
             },
-            data: [120, 132, 101, 134, 90, 230, 210]
+            barWidth:'30%',
+            data: [120, 132, 101, 134]
           },
           {
-            name: '正确性异常',
+            name: '无效数据',
             type: 'bar',
             stack: 'Ad',
             emphasis: {
               focus: 'series'
             },
-            data: [220, 182, 191, 234, 290, 330, 310]
+            data: [220, 182, 191, 234]
           },
           {
-            name: '完整性异常',
+            name: '缺失数据',
             type: 'bar',
             stack: 'Ad',
             emphasis: {
               focus: 'series'
             },
-            data: [150, 232, 201, 154, 190, 330, 410]
+            data: [150, 232, 201, 154]
           },
+          
         ]
       },
-
-      
       statusOptions: [
         {
           "label": "正常数据",
           "value": 1
         }, {
-          "label": "正确性异常",
+          "label": "无效数据",
           "value": 2
         }, {
-          "label": "完整性异常",
+          "label": "缺失数据",
           "value": 3
         }],
       typeOptions: [
@@ -515,18 +534,18 @@ export default {
   },
   methods: {
     queryMain () {
-      this.queryParams.loading=true
+      this.queryParams.loading = true
       fetchElec(this.queryParams).then(res => {
-        this.tableData=res.data.data.items
-        this.queryParams.total=res.data.data.total
-        this.queryParams.loading=false
+        this.tableData = res.data.data.items
+        this.queryParams.total = res.data.data.total
+        this.queryParams.loading = false
       })
     },
     showDetail (row) {
       this.$router.push('/detail')
     },
-    handlePage(p){
-      Object.assign(this.queryParams,p)
+    handlePage (p) {
+      Object.assign(this.queryParams, p)
       this.queryMain()
     },
     handleQuery () {
@@ -543,7 +562,7 @@ export default {
       this.$refs['elForm'].resetFields()
     },
     statusColor (row) {
-      if (row.status ==1) {
+      if (row.status == 1) {
         return 'color:#67C23A'
       }
       if (row.status == 2) {

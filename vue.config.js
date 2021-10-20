@@ -23,6 +23,15 @@ module.exports={
         warnings: true,
         errors: true,
       },
+      proxy: {
+        '/rest': { //替换代理地址名称
+             target: 'http://localhost:3000/', //代理地址
+             changeOrigin: true, //可否跨域
+             pathRewrite: {
+             '^/rest': '' //重写接口，去掉/rest
+            }
+        }
+      },
     },
     css: {
         requireModuleExtension: true,
