@@ -2,28 +2,34 @@
   <div>
     <el-row>
       <el-col :span="5">
-        <el-button type="primary" v-show="!isnmg" @click="handleReturn">返回</el-button>
+        <el-button
+          type="primary"
+          v-show="!isnmg"
+          @click="handleReturn"
+        >返回</el-button>
       </el-col>
     </el-row>
     <div
       ref="mapDom"
-      style="height:500px"
+      style="height:600px"
     ></div>
   </div>
 </template>
 
 <script>
 import * as echarts from 'echarts'
+import {convertData,geoCoordMap,mapData} from './mapData'
 export default {
   data () {
     return {
-      isnmg:true,
-      mapData:{
-        呼伦贝尔市:'hlbe',
-        锡林郭勒盟:'xlgl',
-        通辽市:'tl',
-        兴安盟:'xa',
-        赤峰市:'cf'
+      isnmg: true,
+      mapInstance: '',
+      mapData: {
+        呼伦贝尔市: 'hlbe',
+        锡林郭勒盟: 'xlgl',
+        通辽市: 'tl',
+        兴安盟: 'xa',
+        赤峰市: 'cf'
       },
       mapOption: {
         tooltip: {
@@ -62,7 +68,7 @@ export default {
             saveAsImage: {},
           },
         },
-      
+
         series: [
           {
             type: "map",
@@ -165,31 +171,54 @@ export default {
     }
 
   },
-  mounted(){
+  mounted () {
+    this.mapInstance = echarts.init(this.$refs['mapDom'])
     this.initMap()
   },
   methods: {
     initMap () {
-      let myMap = echarts.init(this.$refs['mapDom'])
-      myMap.setOption(this.mapOption)
-      this.handleMapClick(myMap)
+      this.mapInstance.setOption(this.mapOption)
+      this.handleMapClick(this.mapInstance)
     },
     handleMapClick (instance) {
       let that = this
       instance.on('click', async function (params) {
-       if(params.name in that.mapData){
-         that.mapOption.series[0].map=that.mapData[params.name]
-         that.mapOption.series[0].data=[]
-         that.isnmg=false
-         that.initMap()
-       }else{
-         that.$message({message:'没有更小一级地区数据',type:'error'})
-       }
+        if (params.name in that.mapData) {
+          that.mapOption.series[0].map = that.mapData[params.name]
+          that.mapOption.series[0].data = mapData
+          that.mapOption.series.push({
+            name: '散点',
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            data: convertData(mapData),
+            symbolSize: function (val) {
+              return val[2] / 10;
+            },
+            label: {
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: true
+              },
+              emphasis: {
+                show: true
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#fff'
+              }
+            }
+          })
+          that.isnmg = false
+          instance.clear()
+          that.initMap()
+        }
       })
     },
-    handleReturn(){
-      this.mapOption.series[0].map='nmg'
-      this.isnmg=true
+    handleReturn () {
+      this.mapOption.series[0].map = 'nmg'
+      this.isnmg = true
       this.initMap()
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <el-menu-item :index="handlePath(routeChildren.path)" @click="handleLink">
+  <el-menu-item v-if="routeChildren.meta.title"  :index="handlePath(routeChildren.path)" @click="handleLink">
     <!-- <vab-icon
       v-if="routeChildren.meta.icon"
       :icon="['fas', routeChildren.meta.icon]"

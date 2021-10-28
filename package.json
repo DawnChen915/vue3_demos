@@ -20,7 +20,8 @@
     "sass-loader": "^10.1.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.11",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "xlsx": "^0.17.3"
   },
   "devDependencies": {
     "@vue/babel-plugin-jsx": "^1.0.7",

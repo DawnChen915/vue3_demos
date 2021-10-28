@@ -202,6 +202,44 @@ export const routes = [
           icon: 'layout',
           affix: false,
         },
+      },
+      {
+        path: '/lhstable',
+        name: 'lhstable',
+        component: () => import('@/views/style_demos/lhstable'),
+        meta: {
+          title: 'lhstable',
+          icon: 'layout',
+          affix: false,
+        },
+      },
+      {
+        path: '/electricityCost',
+        name: 'electricityCost',
+        component: () => import('@/views/style_demos/electricityCost/index.vue'),
+        meta: {
+          title: '购电成本',
+          icon: 'layout',
+          affix: false,
+        },
+      }
+    ]
+  },
+  {
+    path:'/excel',
+    redirect:'noRedirect',
+    component: Layout,
+    meta:{title:'excel',icon:'excel',affix:false},
+    children:[
+      {
+        path: 'importExcel',
+        name: 'importExcel',
+        component: () => import('@/views/excel/importExcel.vue'),
+        meta: {
+          title: '导入excel',
+          icon: 'layout',
+          affix: false,
+        },
       }
     ]
   },

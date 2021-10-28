@@ -1,43 +1,58 @@
 <template>
   <el-upload
-    class="upload-demo"
-    action="https://jsonplaceholder.typicode.com/posts/"
-    :on-change="handleChange"
+    v-loading="fileLoading"
+    :class="uploadStyle"
+    action="myupload"
+    :on-change="fileChange"
+    :http-request="(file,fileList)=>{myupload(file,fileList)}"
+    :on-remove="fileRemove"
+    list-type="picture-card"
+    :limit="4"
     :file-list="fileList"
-    :http-request="(file)=>myupload(file,'mytestInfo')"
   >
-    <el-button
-      size="small"
-      type="primary"
-    >点击上传</el-button>
-    <template
-      #tip=""
-      class="el-upload__tip"
-    >只能上传jpg/png文件，且不超过500kb</template>
+    <i class="el-icon-plus"></i>
   </el-upload>
+
 </template>
 
 <script>
 export default {
   data () {
     return {
-      fileList: [{
-        name: 'food.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }, {
-        name: 'food2.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-      }]
+      fileList: [],
+      uploadStyle: '',
+      fileLimit: 1,
+      fileLoading: false,
     };
   },
+  mounted () {
+    //模拟获取文件
+    this.fileLoading = true
+    setTimeout(() => {
+      this.fileList = [
+        { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }
+      ]
+      this.fileLoading = false
+      this.uploadStyle =(this.fileList.length == this.fileLimit||this.fileList.length > this.fileLimit) ? 'noneBtnImg' : ''
+    }, 2000)
+  },
   methods: {
-    handleChange (file, fileList) {
-      this.fileList = fileList.slice(-3);
+    //修改样式
+    fileChange (file, filelist) {
+      this.uploadStyle = filelist.length == this.fileLimit ? 'noneBtnImg' : ''
     },
-    myupload(file,fileList){
-        console.log(file,fileList)
-        debugger
+    myupload (file, fileList) {
+      //在这里处理上传事务
+    },
+    //修改样式
+    fileRemove(file,filelist){
+       this.uploadStyle = filelist.length == this.fileLimit ? 'noneBtnImg' : ''
     }
   }
 }
 </script>
+<style>
+.noneBtnImg .el-upload--picture-card {
+  display: none !important; /* 上传按钮隐藏 */
+}
+</style> 

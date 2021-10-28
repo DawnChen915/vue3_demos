@@ -11,6 +11,10 @@
         if (route.fullPath !== target.fullPath) Object.assign(target, route)
         return
       }
+      //如果没有title就不添加bar
+      if(!route.meta.title){
+        return
+      }
       state.visitedRoutes.push(Object.assign({}, route))
     },
     delVisitedRoute(state, route) {
