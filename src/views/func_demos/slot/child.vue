@@ -26,6 +26,11 @@ export default {
       type:Function
     }
   },
+  watch:{
+    title(val){
+      this.testVal(val)
+    }
+  },
   data() {
     return {
       title: "这是标题",

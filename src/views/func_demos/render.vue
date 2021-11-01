@@ -74,7 +74,7 @@ export default {
           onChange={console.log(this.num)}
           style={"width:500px"}
         />
-        <mychild v-slots={childSlot}></mychild>
+        <mychild v-slots={childSlot} testVal={this.valueChange}></mychild>
         <el-table data={this.tableData}>
           {columns.map((column, index) => {
             const { scopedSlots, ...columnsProps } = column;
