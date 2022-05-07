@@ -165,12 +165,9 @@
       size="mini"
       border
       v-loading="queryParams.loading"
+      :span-method="objectSpanMethod"
     >
-      <el-table-column
-        type="index"
-        label="序号"
-        width="60"
-      />
+     
       <el-table-column
         label="所属市场成员"
         prop="generationEnterprises"
@@ -580,7 +577,20 @@ export default {
       } else {
         return 'el-icon-error'
       }
-    }
+    },
+    objectSpanMethod({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        if (row.rowspan) {
+          return { rowspan: row.rowspan, colspan: 1 }
+        } else{
+          return{
+            rowspan:0,
+            colspan:1
+          }
+        }
+      }
+    },
+
   }
 }
 </script>

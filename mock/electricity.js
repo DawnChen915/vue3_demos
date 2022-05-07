@@ -8,14 +8,15 @@ for (let i = 0; i < count; i++) {
     List.push(Mock.mock({
         id: '@increment',
         timestamp: +Mock.Random.date('T'),
-        name: '@title(3,5)',
+        'rowspan|1':['',2,3],
+        name: '@ctitle(3,5)',
         'area|1': ['兴安盟','赤峰市','通辽市','呼伦贝尔市'],
         code: '@float(0, 100, 2, 2)',
         'type|1': ['水电', '火电', '风电', '光电','其他'],
         'status|1': [1,2,3],
         ratio:'@integer(300, 5000)',
-        generationEnterprises: '@name(3,5)',
-        generatingStation:'@name(3,5)'
+        generationEnterprises: '@ctitle(3,5)',
+        generatingStation:'@ctitle(3,5)'
     }))
 }
 console.log(List)

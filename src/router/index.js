@@ -203,22 +203,23 @@ export const routes = [
           affix: false,
         },
       },
-      {
-        path: '/lhstable',
-        name: 'lhstable',
-        component: () => import('@/views/style_demos/lhstable'),
-        meta: {
-          title: 'lhstable',
-          icon: 'layout',
-          affix: false,
-        },
-      },
+      
       {
         path: '/electricityCost',
         name: 'electricityCost',
         component: () => import('@/views/style_demos/electricityCost/index.vue'),
         meta: {
           title: '购电成本',
+          icon: 'layout',
+          affix: false,
+        },
+      },
+      {
+        path: '/tableTest',
+        name: 'tableTest',
+        component: () => import('@/views/style_demos/tableTest/index.vue'),
+        meta: {
+          title: '合并表格测试',
           icon: 'layout',
           affix: false,
         },
